@@ -73,3 +73,8 @@ int getPeletonResistance(int resistance) {
    int pr = int((0.0116058 * pow(resistance, 3)) + (-0.568462 * pow(resistance, 2)) + (10.4126 * resistance) - 31.4807);
    return pr < 0 ? 0 : pr;
 }
+
+int getMilesPerHour(int cadence) {
+       if (cadence == 0) return 0;
+       return cadence * 4.8 / 1219 * 60;
+}

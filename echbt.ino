@@ -15,6 +15,7 @@ static BLEScan* scanner;
 
 static int cadence = 0;
 static int resistance = 0;
+static int mph = 0;
 static int power = 0;
 static unsigned long runtime = 0;
 static unsigned long last_millis = 0;
@@ -30,6 +31,7 @@ static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, ui
       //runtime = int((data[7] << 8) + data[8]); // This runtime has massive drift
       cadence = int((data[9] << 8) + data[10]);
       power = getPower(cadence, resistance);
+      mph = getMilesPerHour(cadence);
       break;
     // Resistance notification
     case 0xD2:
@@ -50,6 +52,7 @@ static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, ui
       }
       Serial.print(data[x], HEX);
     }
+
     Serial.println();
   }
 }
@@ -120,8 +123,9 @@ void updateDisplay() {
   Heltec.display->drawXbm(0, 52, resistance_icon_width, resistance_icon_height, resistance_icon);
   Heltec.display->drawProgressBar(23, 49, 78, 14, uint8_t((100 * resistance) / maxResistance));
 
-  // Echelon Icon
-  Heltec.display->drawXbm(100, 3, echelon_icon_width, echelon_icon_height, echelon_icon);
+  // MPH
+  itoa(mph, buf, 10);
+  Heltec.display->drawString(116, 0, buf);
 
   Heltec.display->display();
 }
