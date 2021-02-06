@@ -19,7 +19,7 @@ static int power = 0;
 static unsigned long runtime = 0;
 static unsigned long last_millis = 0;
 
-#define debug 0
+#define debug 1
 #define maxResistance 32
 
 // Called when device sends update notification
